@@ -8,15 +8,15 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     var coolPeople = [Person]()
     var currentIndex = 0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = "Home"
         //array stuff
         var people = [Person]()
         let jung = Person(firstName: "Jung", lastName: "Kim")
@@ -29,11 +29,19 @@ class ViewController: UIViewController, UITableViewDataSource {
         
 
         self.tableView.dataSource = self
-        
-        
-        self.view.backgroundColor = UIColor.redColor()
+        self.tableView.delegate = self
         
         println("view did load")
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowGreen"{
+            println("showing green")
+            let destinationVC = segue.destinationViewController as PersonDetailViewController
+            let indexPath = tableView.indexPathForSelectedRow()
+            let person = coolPeople[indexPath!.row]
+            destinationVC.selectedPerson = person
+        }
     }
     
 
@@ -56,6 +64,10 @@ class ViewController: UIViewController, UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return coolPeople.count
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+      
     }
 
 }
