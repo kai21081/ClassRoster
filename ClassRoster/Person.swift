@@ -6,12 +6,13 @@
 //  Copyright (c) 2015 JHK. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Person{
     
-    let firstName = "John"
-    let lastName = "Doe"
+    var firstName = "John"
+    var lastName = "Doe"
+    var image :  UIImage?
     
     init(firstName : String, lastName : String){
         

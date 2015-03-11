@@ -64,24 +64,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Eu-ti-L5K">
-                                <rect key="frame" x="38" y="90" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y14-om-0i2">
-                                <rect key="frame" x="111" y="90" width="129" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4T9-fC-WIz">
+                                <rect key="frame" x="254" y="78" width="92" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WBm-fO-Cfq">
+                                <rect key="frame" x="255" y="116" width="91" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="seahawkslogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="myN-mw-Qlh">
+                                <rect key="frame" x="200" y="174" width="200" height="200"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="F6e-iI-wpX"/>
+                                    <constraint firstAttribute="width" constant="200" id="bNl-RM-ZDG"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleAspectFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nIm-fp-iA7">
+                                <rect key="frame" x="277" y="562" width="46" height="30"/>
+                                <state key="normal" title="Photos">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="photoButtonPressed:" destination="VE4-eo-CcQ" eventType="touchUpInside" id="236-C0-x2X"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.1600404711" green="1" blue="0.2989708935" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="WBm-fO-Cfq" firstAttribute="top" secondItem="4T9-fC-WIz" secondAttribute="bottom" constant="8" id="HPN-Tc-9rK"/>
+                            <constraint firstItem="myN-mw-Qlh" firstAttribute="top" secondItem="WBm-fO-Cfq" secondAttribute="bottom" constant="28" id="IF5-bX-Qb8"/>
+                            <constraint firstItem="8sE-ge-mVq" firstAttribute="top" secondItem="nIm-fp-iA7" secondAttribute="bottom" constant="8" id="M6J-4M-6YC"/>
+                            <constraint firstItem="4T9-fC-WIz" firstAttribute="top" secondItem="zEG-IB-VoK" secondAttribute="bottom" constant="14" id="Phe-7d-8x0"/>
+                            <constraint firstAttribute="centerX" secondItem="WBm-fO-Cfq" secondAttribute="centerX" id="Tg1-6y-Un8"/>
+                            <constraint firstAttribute="centerX" secondItem="myN-mw-Qlh" secondAttribute="centerX" id="Y60-n8-3ZH"/>
+                            <constraint firstAttribute="centerX" secondItem="4T9-fC-WIz" secondAttribute="centerX" id="ZrQ-Me-dt3"/>
+                            <constraint firstAttribute="centerX" secondItem="nIm-fp-iA7" secondAttribute="centerX" id="i0D-BL-Gdp"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="firstNameLabel" destination="3Eu-ti-L5K" id="Wc8-qd-b7I"/>
-                        <outlet property="lastNameLabel" destination="y14-om-0i2" id="63z-Ao-n5Z"/>
+                        <outlet property="firstNameTextLabel" destination="4T9-fC-WIz" id="auJ-oS-uUA"/>
+                        <outlet property="imageView" destination="myN-mw-Qlh" id="hxA-wc-I8b"/>
+                        <outlet property="lastNameTextLabel" destination="WBm-fO-Cfq" id="lLg-OJ-X1s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VL3-I8-Ivr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -107,4 +132,7 @@
             <point key="canvasLocation" x="1057" y="241"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="seahawkslogo.png" width="500" height="500"/>
+    </resources>
 </document>
