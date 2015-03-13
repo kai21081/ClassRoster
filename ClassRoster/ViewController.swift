@@ -18,14 +18,31 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         self.title = "Home"
         //array stuff
-        var people = [Person]()
-        let jung = Person(firstName: "Jung", lastName: "Kim")
-        let jon = Person(firstName: "Jon", lastName: "Young")
-        let greg = Person(firstName: "Greg", lastName: "Bowman")
-        let jisoo = Person(firstName: "Jisoo", lastName: "Hong")
-        let chu = Person(firstName: "Chu", lastName: "Kim")
+//        var people = [Person]()
+//        let jung = Person(firstName: "Jung", lastName: "Kim")
+//        let jon = Person(firstName: "Jon", lastName: "Young")
+//        let greg = Person(firstName: "Greg", lastName: "Bowman")
+//        let jisoo = Person(firstName: "Jisoo", lastName: "Hong")
+//        let chu = Person(firstName: "Chu", lastName: "Kim")
+//        
+//        coolPeople = [jung,jon,greg,jisoo,chu]
         
-        coolPeople = [jung,jon,greg,jisoo,chu]
+        if let filePath = NSBundle.mainBundle().pathForResource("People", ofType: "plist"){
+            
+            println(filePath)
+            
+            if let plistArray = NSArray(contentsOfFile: filePath){
+                for var i = 0; i < plistArray.count; i++ {
+                    let data = plistArray[i] as NSDictionary
+                    let personFirstName = data["firstName"] as String
+                    let personLastName = data["lastName"] as String
+                    let person = Person(firstName: personFirstName, lastName: personLastName)
+                    coolPeople.append(person)
+                    
+                }
+            }
+        }
+    
         
 
         self.tableView.dataSource = self
@@ -56,9 +73,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as PersonCell
+        let personToDisplay = coolPeople[indexPath.row]
         //cell.backgroundColor = UIColor.blueColor()
-        cell.textLabel?.text = coolPeople[indexPath.row].firstName
+        cell.personLabel.text = personToDisplay.firstName
+        
+        if personToDisplay.image != nil{
+            cell.personImageView.image = personToDisplay.image
+        }else{
+            cell.personImageView.image = UIImage(named:"seahawkslogo.png")
+        }
         return cell
     }
     

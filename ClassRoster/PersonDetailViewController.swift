@@ -16,6 +16,10 @@ class PersonDetailViewController: UIViewController,UITextFieldDelegate, UIImageP
     var selectedPerson = Person(firstName: "Dummy", lastName: "Dummy")
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if selectedPerson.image != nil{
+            imageView.image = selectedPerson.image
+        }
         firstNameTextLabel.text = selectedPerson.firstName
         lastNameTextLabel.text = selectedPerson.lastName
         //imageView.image = selectedPerson.image?
