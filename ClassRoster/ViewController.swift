@@ -16,44 +16,62 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Home"
-        //array stuff
-//        var people = [Person]()
-//        let jung = Person(firstName: "Jung", lastName: "Kim")
-//        let jon = Person(firstName: "Jon", lastName: "Young")
-//        let greg = Person(firstName: "Greg", lastName: "Bowman")
-//        let jisoo = Person(firstName: "Jisoo", lastName: "Hong")
-//        let chu = Person(firstName: "Chu", lastName: "Kim")
-//        
-//        coolPeople = [jung,jon,greg,jisoo,chu]
+        //Persistent data
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         
-        if let filePath = NSBundle.mainBundle().pathForResource("People", ofType: "plist"){
-            
-            println(filePath)
-            
-            if let plistArray = NSArray(contentsOfFile: filePath){
-                for var i = 0; i < plistArray.count; i++ {
-                    let data = plistArray[i] as NSDictionary
-                    let personFirstName = data["firstName"] as String
-                    let personLastName = data["lastName"] as String
-                    let person = Person(firstName: personFirstName, lastName: personLastName)
-                    coolPeople.append(person)
-                    
+        if let count = userDefaults.objectForKey("launchCount") as? Int{
+            let newCount = count + 1
+            userDefaults.setObject(newCount, forKey: "launchCount")
+        }else{
+            //first launch
+            let count = 1
+            userDefaults.setObject(count, forKey: "launchCount")
+        }
+        userDefaults.synchronize() //force save
+        let c = userDefaults.objectForKey("launchCount") as? Int
+        println("launchCount \(c!)")
+        
+        
+        self.loadFromArchive()
+        if self.coolPeople.isEmpty { //if array loaded from archive is empty, load it from plist
+            if let filePath = NSBundle.mainBundle().pathForResource("People", ofType: "plist"){
+                if let plistArray = NSArray(contentsOfFile: filePath){
+                    for var i = 0; i < plistArray.count; i++ {
+                        if let data = plistArray[i] as? NSDictionary{
+                            let personFirstName = data["firstName"] as String
+                            let personLastName = data["lastName"] as String
+                            let person = Person(firstName: personFirstName, lastName: personLastName)
+                            coolPeople.append(person)
+                        }
+                    }
                 }
             }
+            self.saveToArchive()
         }
-    
-        
 
         self.tableView.dataSource = self
         self.tableView.delegate = self
-        
-        println("view did load")
+    }
+    
+    func loadFromArchive(){
+        let path = getDocumentsPath()
+        let arrayFromArchive = NSKeyedUnarchiver.unarchiveObjectWithFile(path + "/archive") as [Person]
+        coolPeople = arrayFromArchive
+    }
+    
+    func saveToArchive(){
+        let path = self.getDocumentsPath()
+        NSKeyedArchiver.archiveRootObject(coolPeople, toFile: path + "/archive")
+    }
+    
+    func getDocumentsPath() -> String{
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory,NSSearchPathDomainMask.UserDomainMask, true)
+        let path = paths.first as String
+        return path
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowGreen"{
-            println("showing green")
             let destinationVC = segue.destinationViewController as PersonDetailViewController
             let indexPath = tableView.indexPathForSelectedRow()
             let person = coolPeople[indexPath!.row]
@@ -65,6 +83,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+        self.saveToArchive()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -75,7 +94,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as PersonCell
         let personToDisplay = coolPeople[indexPath.row]
-        //cell.backgroundColor = UIColor.blueColor()
+
         cell.personLabel.text = personToDisplay.firstName
         
         if personToDisplay.image != nil{
